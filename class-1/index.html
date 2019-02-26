@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+
+        }
+
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            background-color: black;
+            /* 渐变色  径向渐变  （形状at位置，颜色 正色作用的位置， 颜色 正色作用的位置） */
+            background-image: radial-gradient(circle at center center, rgba(244, 23, 234, 0.2), rgba(0, 0, 0, 0.5));
+            background-repeat: no-repeat;
+            overflow: hidden;
+
+        }
+
+        .wrapper {
+            perspective: 3000px;
+        }
+
+        .box {
+            width: 120px;
+            height: 180px;
+            border: 1px solid red;
+            margin: 200px auto;
+            position: relative;
+            transform-style: preserve-3d;
+        }
+
+        img {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            /* 映射 below 向下 10px 间隔10px 遮罩层图像 */
+            -webkit-box-reflect: below 10px -webkit-linear-gradient(top, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.5) 100%);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="wrapper">
+        <div class="box">
+            <img src="./img/1.jpg" alt="">
+            <img src="./img/2.jpg" alt="">
+            <img src="./img/3.jpg" alt="">
+            <img src="./img/4.jpg" alt="">
+            <img src="./img/5.jpg" alt="">
+            <img src="./img/6.jpg" alt="">
+            <img src="./img/7.jpg" alt="">
+            <img src="./img/8.jpg" alt="">
+            <img src="./img/9.jpg" alt="">
+            <img src="./img/10.jpg" alt="">
+            <img src="./img/11.jpg" alt="">
+            <img src="./img/12.jpg" alt="">
+        </div>
+    </div>
+    <script>
+        var imgList = document.getElementsByTagName('img');
+        var box = document.getElementsByClassName('box')[0];
+        var len = imgList.length;
+        var deg = 360 / len;
+        function init() {
+            for (var i = 0; i < len; i++) {
+                // 第一张图片最后展示  最后一张图片先展示  len - 1 是图片的最大索引值 i表示当前图片的索引值
+                // 即  第一张图片 延迟时间为  len - 1 - 0 最后一张图片的延迟时间为  len - 1 - (len - 1) = 0
+                imgList[i].style.transition = "transform 0.5s linear " + ((len - 1 - i) * 0.1) + 's';
+                imgList[i].style.transform = "rotateY(" + (deg * i) + 'deg) translateZ(300px)';
+            }
+        }
+        var lastX = null,
+            lastY = null,
+            nowX = null,
+            nowY = null,
+            roX = 0,
+            roY = 0,
+            disX = 0,
+            disY = 0,
+            timer = null;
+        // 鼠标水平平移  绕着y轴转  rotateY()
+        // 鼠标竖直平移  绕着x轴转  rotateX()
+        function bindEvent() {
+
+            document.body.addEventListener('mousedown', mouseDown, false)
+        }
+
+        function mouseDown(e) {
+            e.preventDefault();
+            lastX = event.clientX;
+            lastY = event.clientY;
+            document.body.addEventListener('mousemove', mouseMove, false);
+            document.body.addEventListener('mouseup', mouseUp, false);
+        }
+        function mouseMove(e) {
+            //保存当前的鼠标位置
+            nowX = e.clientX;
+            nowY = e.clientY;
+            disX = nowX - lastX;
+            disY = nowY - lastY;
+            // 盒子的旋转角度
+            // 为什么不直接赋值？ 
+            // 如果直接赋值会出现一个问题 当鼠标抬起再次按下的时候 旋转不是从当前位置开始旋转   而是盒子初始位置的旋转
+            // 我们需要的是每次旋转的时候是从上一次运动结束的角度继续旋转
+            roY += disX * 0.2;
+            roX -= disY * 0.1;
+            box.style.transform = "rotateX(" + roX + 'deg) rotateY(' + roY + 'deg)';
+
+            lastX = nowX;
+            lastY = nowY;
+        }
+        function mouseUp(e) {
+            document.body.removeEventListener('mousemove', mouseMove);
+            // 缓冲运动  roX roY 越来越小  即  需要减小disX  disY 
+            timer = setInterval(function () {
+                disX *= 0.95;
+                disY *= 0.95;
+                roY += disX * 0.2;
+                roX -= disY * 0.2;
+                box.style.transform = "rotateX(" + roX + 'deg) rotateY(' + roY + 'deg)';
+
+                if (Math.abs(disX) < 0.1 && Math.abs(disY) < 0.1) {
+                    clearInterval(timer);
+                }
+            }, 100)
+
+        }
+
+        window.onload = function () {
+            init();
+            bindEvent()
+        }
+
+    </script>
+</body>
+
+</html>

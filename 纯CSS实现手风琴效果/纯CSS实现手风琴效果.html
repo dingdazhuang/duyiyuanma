@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        .content {
+            width: 1050px;/*外层宽度*/
+            margin: 100px auto;/*水平居中*/
+        }
+        .content ul li {
+            float: left;/*浮动*/
+            list-style: none;/*取消默认样式*/
+            width: 200px;
+            height:284px;
+            transition: all 2s;/*过渡  all代表所有属性，因为懒不想写，所以用all代替想改变的属性*/
+            position: relative;/* title 相对于当前li进行定位  */
+            overflow: hidden;
+            border-left: 2px solid rgba(255, 255, 255, .8);
+            box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.8);/*阴影*/
+        }
+        /* 注意：以下两个hover  不可以换位置 */
+        .content ul:hover li {
+            width: 80px;/*当鼠标移入到其中一个 li的时候 其他li宽度缩小*/
+        }
+        .content ul li:hover {
+            width: 500px;
+            /* height:500px; */
+        }
+        /*如果图片定义   宽高百分百，无法实现手风琴效果*/
+        .content ul li a img{
+            width:500px;/*此宽度可以根据父元素宽度定义，也可以不定义*/
+            height:100%;
+        }
+        .content li .title {
+            position: absolute;/*文字 title 定位*/
+            bottom: 0px;
+            left: 0;
+            width: 100%;
+            height: 50px;
+            background-color: rgba(0, 0, 0, .5);/* title 文字背景 */
+            text-indent: 2em;/*首行缩进两个字符*/
+            line-height: 50px;
+           
+        }
+        .content a {
+            color: #fff;
+            text-decoration: none;
+        }
+</style>
+</head>
+<body>
+    <div class="content">
+        <ul>
+            <li>
+                <a href="#">
+                    <img src="img/1.jpg" />
+                </a>
+                <p class="title">
+                    <a href="#">云南.大理</a>
+                </p>
+            </li>
+            <li>
+                <a href="#">
+                    <img src="img/2.jpg" />
+                </a>
+                <p class="title">
+                    <a href="#">广西.桂林</a>
+                </p>
+            </li>
+            <li>
+                <a href="#">
+                    <img src="img/3.jpg" />
+                </a>
+                <p class="title">
+                    <a href="#">福建.厦门</a>
+                </p>
+            </li>
+            <li>
+                <a href="#">
+                    <img src="img/4.jpg" />
+                </a>
+                <p class="title">
+                    <a href="#">浙江.千岛湖</a>
+                </p>
+            </li>
+            <li>
+                <a href="#">
+                    <img src="img/5.jpg" />
+                </a>
+                <p class="title">
+                    <a href="#">长江.三峡</a>
+                </p>
+            </li>
+        </ul>
+    </div>
+</body>
+</html>
